@@ -1,42 +1,63 @@
 import React, { Component } from 'react';
 import './App.css';
-
+import axios from 'axios';
 class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
           firstname: '',
-          lastname: '',
+          lastname: '', 
+          account:{firstname:'',lastname:''}, 
+          accountNumber:'',
           requestResponse: ''
         }
       } 
       pushRequest=()=>{ 
-          console.log(this.state.firstname, this.state.lastname)
-      }
+          axios.post(`/createAccount`,this.state.account).then(Response => {
+              console.log(Response);
+          }).then(this.setState({accountNumber:Response.accountNumber})).then(console.log(this.state.accountNumber))
+
+      } 
+      
       setStates = (event) => {
-        this.setState({ [event.target.name]: event.target.value });
+
+const dummy = {
+    firstname : this.state.account.firstname,
+    lastname : this.state.account.lastname
+};
+
+
+if (event.target.id === "Firstname"){
+    dummy.firstname = event.target.value;
+}
+if (event.target.id === "Lastname"){
+    dummy.lastname = event.target.value;
+}
+this.setState({account:dummy});
+      
+      
+        
+
       }
+      
       handleSubmit = (event) => {
         event.preventDefault();
       }
-      print = ()=>{ 
-          console.log("it worked")
-      }
+   
   render() {
     return (
       <div className="App">
-        {/* <header className="App-header">
-          <p>erabhr</p>
-        </header>  */}
+      <p>{this.state.account.firstname}</p>
+      <p>{this.state.account.lastname}</p>
         <form onSubmit={this.handleSubmit} className="form-inline">
           <label className="required"></label>
           <label>
-            <input type="text" name='firstname' target='one' className="form-control inputArea" onChange={this.setStates} firstname={this.state.firstname} id="Firstname" placeholder="firstname *"></input>
-            <input type="text" name='lastname' target='two' className="form-control inputArea" onChange={this.setStates} lastname={this.state.lastname} id="Lastname" placeholder="lastname *"></input>
+            <input type="text" name='firstname' target='one' className="form-control inputArea" onChange={this.setStates} id="Firstname" placeholder="firstname *"></input>
+            <input type="text" name='lastname' target='two' className="form-control inputArea" onChange={this.setStates}  id="Lastname" placeholder="lastname *"></input>
           </label>
           <input type="submit" value="Submit" onClick={this.pushRequest} />
         </form> 
-        <button onClick={this.print}>thjrsjtr</button>
+       
          
       </div>
     );

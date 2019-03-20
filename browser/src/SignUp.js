@@ -13,12 +13,11 @@ class SignUp extends Component {
         }
       } 
       pushRequest=()=>{ 
-          axios.post(`/createAccount`,this.state.account).then(Response => {
-              console.log(Response);
-          }).then(this.setState({accountNumber:Response.accountNumber})).then(console.log(this.state.accountNumber))
-
+          axios.post(`/createAccount`,this.state.account).then(r => {
+              this.setState({requestResponse: r.data})
+          })
       } 
-      
+    //   .then(this.setState({accountNumber:this.state.requestResponse.accountNumber}))
       setStates = (event) => {
 
 const dummy = {
@@ -48,7 +47,8 @@ this.setState({account:dummy});
     return (
       <div className="App">
       <p>{this.state.account.firstname}</p>
-      <p>{this.state.account.lastname}</p>
+      <p>{this.state.account.lastname}</p> 
+      <p>Sup {this.state.requestResponse.firstname} your account number is {this.state.requestResponse.accountNumber}</p>
         <form onSubmit={this.handleSubmit} className="form-inline">
           <label className="required"></label>
           <label>
